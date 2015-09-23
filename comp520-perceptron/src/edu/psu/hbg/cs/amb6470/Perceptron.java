@@ -4,80 +4,86 @@ import edu.princeton.cs.introcs.Matrix;
 
 public class Perceptron {
 
+
+	public final double[][] x;
+	public final int[] y;
+	public final double learningRate;
+	
 	/**
 	 * First 200 entries are the indices of the validation set, remaining 800 are indices of the training set 
 	 */
-	int[] dataSplit;
-	double[][] x;
-	int[] y;
-	double learningRate;
-	
-	double[] w;
-	double trainingError;
-	double validationError;
+	public final int[] dataSplit = DataSetSplitter.fisherYatesShuffle();
+	//public final int[] dataSplit = DataSetSplitter.basicSelection();
+	/**
+	 * The weight vector defining this perceptron
+	 */
+	public double[] w = new double[2];
 	
 	public Perceptron(double[][] x, int[] y, double learningRate) {
-		this.dataSplit = DataSetSplitter.fisherYatesShuffle();
 		this.x = x;
 		this.y = y;
 		this.learningRate = learningRate;
 		
-		this.w = new double[2];
-		trainingError = 1;
-		validationError = 1;
+		//this.w[0] = 3; 
+		//this.w[1] = -3;
 	}
 	
-	public int predict(double[] instance) {
+
+	/**
+	 * @param n
+	 */
+	public void learnWeights_MaxIterationsOnly(int n) {
+		double[] trainingErrorByIteration = new double[n];
+		double[] validationErrorByIteration = new double[n];
+		for (int i = 0; i < n; i ++) {
+			learnWeights_SingleEpoch();
+			trainingErrorByIteration[i] = evaluateTrainingError();
+			validationErrorByIteration[i] = evaluateValidationError();
+		}
+		FileReaderAndWriter.writeTrainingAndValidationErrors(trainingErrorByIteration, validationErrorByIteration);
+	}
+
+	private int predict(double[] instance) {
 		return (int)Math.signum(Matrix.dot(w, instance));
 	}
-	
-	/**
-	 * 
-	 * @param dataSplit 
-	 * @param x
-	 * @param y
-	 * @param learningRate
-	 * @return
-	 */
-	public double[] learnWeights(int[] dataSplit, double[][] x, int[] y, double learningRate) {
-		
-		for (int t = 200; t < 1000; t++) {
+
+	private void learnWeights_SingleEpoch() {
+		double trainingError = 1;
+		for (int t = Main.currNumOfValidationExamples; t < Main.currNumOfExamples; t++) {
 			double[] instance = x[dataSplit[t]];
 			int label = y[dataSplit[t]];
 			int prediction = predict(instance);
 			if (prediction != label) {
 				double[] nextW = Matrix.add(w, Matrix.multiplyScalar(learningRate * label, instance));
 				
-				double nextTrainingError = evaluateTrainingError();
-				if (nextTrainingError < trainingError) {
+				//double nextTrainingError = evaluateTrainingError();
+				//if (nextTrainingError <= trainingError) {
 					this.w = nextW;
-					this.trainingError = nextTrainingError;
-				} 
+				//	trainingError = nextTrainingError;
+				//} 
 			}
 		}
-		
-		return w;
 	}
 	
-	public double evaluateTrainingError() {
+	private double evaluateTrainingError() {
 		double error = 0.0;
-		for (int t = 200; t < 1000; t++) {
+		for (int t = Main.currNumOfValidationExamples; t < Main.currNumOfExamples; t++) {
 			double[] instance = x[dataSplit[t]];
 			int label = y[dataSplit[t]];
 			int prediction = predict(instance);
 			error += (label == prediction) ? 0 : 1;
 		}
-		return error / 800;
+		return error / (Main.currNumOfExamples - Main.currNumOfValidationExamples);
 	}
 	
-	public double evaluateValidationError() {
+	private double evaluateValidationError() {
 		double error = 0.0;
-		for (int t = 0; t < 200; t++) {
+		for (int t = 0; t < Main.currNumOfValidationExamples; t++) {
 			double[] instance = x[dataSplit[t]];
 			int label = y[dataSplit[t]];
 			int prediction = predict(instance);
 			error += (label == prediction) ? 0 : 1;
 		}
-		return error / 200;
+		return error / (Main.currNumOfValidationExamples);
 	}
 }

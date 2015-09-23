@@ -1,28 +1,23 @@
 package edu.psu.hbg.cs.amb6470;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-
 import edu.gmu.cs.MersenneTwisterFast;
-import edu.princeton.cs.introcs.StdOut;
+import edu.princeton.cs.introcs.StdArrayIO;
 
 public class DataSetSplitter {
 	static MersenneTwisterFast rand = new MersenneTwisterFast();
 	
 	/**
-	 * Returns an int array where the first 200 elements are randomly selected integers from [0, 999], the
-	 * remaining 800 elements are the remaining numbers from [0, 999]
+	 * Returns an int array where the first Main.currNumOfValidationExamples; elements are randomly selected integers from [0, currNumOfExamples-1], the
+	 * remaining 800 elements are the remaining numbers from [0, currNumOfExamples-1]
 	 * @return
 	 */
 	public static int[] basicSelection() {
-		boolean[] used = new boolean[1000];
+		boolean[] used = new boolean[Main.currNumOfExamples];
 
-		int[] retval = new int[1000];
-		int validationPtr = 0, trainingPtr = 200;
-		while (validationPtr < 200) {
-			int next = rand.nextInt(1000);
+		int[] retval = new int[Main.currNumOfExamples];
+		int validationPtr = 0, trainingPtr = Main.currNumOfValidationExamples;
+		while (validationPtr < Main.currNumOfValidationExamples) {
+			int next = rand.nextInt(Main.currNumOfExamples);
 			if (!used[next]) {
 				retval[validationPtr] = next;
 				used[next] = true;
@@ -30,30 +25,29 @@ public class DataSetSplitter {
 			}
 		}
 		
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < Main.currNumOfExamples; i++) {
 			if (!used[i]) {
 				retval[trainingPtr] = i;
 				trainingPtr++;
 			}
 		}
-		assert(validationPtr == 200);
-		assert(trainingPtr == 1000);
+		assert(trainingPtr == Main.currNumOfExamples);
 		return retval;
 	}
 	
 	/**
 	 * Source: https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
-	 * @return A random permutation of the numbers 0 through 999. 
-	 * So reading the first 200 of these numbers should be the same as random
+	 * @return A random permutation of the numbers 0 through currNumOfExamples-1. 
+	 * So reading the first Main.currNumOfValidationExamples; of these numbers should be the same as random
 	 * uniform sampling.
 	 */
 	public static int[] fisherYatesShuffle() {
-		int[] retval = new int[1000];
-		for (int i = 0; i < 1000; i++) {
+		int[] retval = new int[Main.currNumOfExamples];
+		for (int i = 0; i < Main.currNumOfExamples; i++) {
 			retval[i] = i;
 		}
 
-		for (int i = 999, j = 0, tmp = 0; i >= 0; i--) {
+		for (int i = Main.currNumOfExamples-1, j = 0, tmp = 0; i > 0; i--) {
 			j = rand.nextInt(i);
 			tmp = retval[i];
 			retval[i] = retval[j];
