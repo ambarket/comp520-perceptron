@@ -101,7 +101,7 @@ public class FileReaderAndWriter {
 		plot.addLinePlot("Validation Error", iterationNumber, validationErrorByIteration);
 
 		plot.setFixedBounds(1, -0.1, 1);
-		plot.setFixedBounds(0, 0, iterationNumber.length);
+		plot.setFixedBounds(0, 0, 1000);
 		plot.setLinearSlicing(1, 11);
 		plot.setLinearSlicing(0, 10);
 		

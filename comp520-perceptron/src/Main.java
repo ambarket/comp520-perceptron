@@ -9,7 +9,7 @@ public class Main {
 	/**
 	 * Allows you to set the timeout for the graph to stay on the screen in the JPanel. Result of annoying thing with the 
 	 * plot framework, I couldn't figure out how to get the legend to save to the file with the graph without rendering 
-	 * it in a JPanel first.
+	 * it in a JPanel first. Below 200 ms sometimes results in the graph not fully rendered.
 	 */
 	public static final int msBeforeClosingEachGraph = 500;
 	
