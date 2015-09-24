@@ -1,0 +1,3 @@
+I often get 'Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException'...
+This is a known issue due to jmathplot threading behaviour which often arises when refreshing a plot with high frequency. 
+This issue is not critical and do not block the JVM.
