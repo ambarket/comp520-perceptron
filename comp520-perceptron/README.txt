@@ -38,17 +38,21 @@ A. Compilation and Execution
 
 B.Other Notes:
 
-The plotStuff.jar file must be included in the classpath for the plotting to work. This jar consists of the 
-following two packages, with some very minor tweaks I made to make things work for me.
+	The plotStuff.jar file must be included in the classpath for the plotting to work. This jar consists of the 
+	following two packages, with some very minor tweaks I made to make things work for me.
 
-https://github.com/yannrichet/jmathplot
-https://github.com/yannrichet/jmathio
+	https://github.com/yannrichet/jmathplot
+	https://github.com/yannrichet/jmathio
 
-If you see 'Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException', just ignore it,
-it doesn't seem to have any impact on the rendering of the graphs so it doesn't really matter. It's a
-known issue with jmathplot that they don't want to fix. I think I got it to stop happening but it could
-still occur.
-See https://sites.google.com/site/mulabsltd/products/jmathplot/i-often-get-exception-in-thread-awt-eventqueue-0-java-lang-nullpointerexception
+	If you see 'Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException', just ignore it,
+	it doesn't seem to have any impact on the rendering of the graphs so it doesn't really matter. It's a
+	known issue with jmathplot that they don't want to fix. I think I got it to stop happening but it could
+	still occur.
+	See https://sites.google.com/site/mulabsltd/products/jmathplot/i-often-get-exception-in-thread-awt-eventqueue-0-java-lang-nullpointerexception
+	
+	
+	Matrix.java Source: http://introcs.cs.princeton.edu/java/22library/Matrix.java.html
+	MersenneTwisterFast Source: https://cs.gmu.edu/~sean/research/mersenne/MersenneTwisterFast.java
 
 
 
