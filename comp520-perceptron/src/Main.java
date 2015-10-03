@@ -45,6 +45,15 @@ public class Main {
 	public static final double MAX_TERMINATION_ERROR = 0.2;
 	
 	public static void main(String[] args) {
+		// Allow user to specify a seed to make experiment repeatable.
+		if (args.length > 0) {
+		    try {
+		    	DataSplitter.rand.setSeed(Integer.parseInt(args[0]));
+		    } catch (NumberFormatException e) {
+		        System.err.println("Argument" + args[0] + " must be an integer.");
+		        System.exit(1);
+		    }
+		}
 		/**
 		 * Use the same starting weights across all tests to make fair comparison of learning rates. 
 		 * 
@@ -57,6 +66,8 @@ public class Main {
 		 * Obviously if this were actually to be used for a data mining application you'd use small random weights from a gaussian 
 		 * distribution around 0 as discussed in class. 
 		 */
+		// Hard coded seed to make my experiment repeatable.
+		
 		double[] startingW = new double[3];
 		startingW[0] = DataSplitter.rand.nextDouble() * DataSplitter.rand.nextInt(500) * (DataSplitter.rand.nextBoolean() ? 1 : -1); 
 		startingW[1] = DataSplitter.rand.nextDouble() * DataSplitter.rand.nextInt(500) * (DataSplitter.rand.nextBoolean() ? 1 : -1); 
@@ -84,8 +95,8 @@ public class Main {
 					dataSplit = DataSplitter.fisherYatesShuffle(); // Use same partitioning for all learning rates for fair comparison
 					break;
 			}
-			
-			for (double learningRate = .01; learningRate < 1.29; learningRate = learningRate *= 2) {
+			double[] learningRates = {0.01, 0.1, 0.2, 0.5, 0.8, 1};
+			for (double learningRate : learningRates) {
 				Perceptron perceptron = new Perceptron(x, y, dataSplit, startingW, learningRate);
 				perceptron.learnWeights_MaxIterationsOnly(MAX_ITERATIONS);
 				perceptron.w = startingW; // Reset weights to learn again

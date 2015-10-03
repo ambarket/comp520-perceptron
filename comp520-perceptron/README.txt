@@ -5,7 +5,8 @@ A. Compilation and Execution
 		1. cd to the root of directory I sent 
 			(Should have src, datasetFiles, and outputFiles folders, along with this README)
 		2. javac -cp src/plotStuff.jar src/*.java
-		3. java -cp src/plotStuff.jar;src Main
+		3. java -cp src/plotStuff.jar;src Main 123456
+			a. The 123456 is the seed to the random number generator used for the experiment discussed in the writeup.
 	
 	Or From Eclipse...
  
@@ -18,22 +19,22 @@ A. Compilation and Execution
 		1. Reads the datasets from the datasetFiles directory.
 		2. Randomly splits the datasets into 80% training, 20% validation
 		3. Randomly selects a weight vector with components in the range [-500, 500]. 
-			This big range was chosen to give the perceptrons some work to do and to make
+			This relatively big range was chosen to give the perceptrons some work to do and to make
 			for more interesting graphs. Setting to a vector close to zero allows it to converge
 			instantly, and that's not interesting.
-		4. For each dataset, 16 graphs will be generated.
-			2a. Test the perceptron with 8 different learning rates 0.01, 0.02, 0.04, 0.08, 0.16, 0.32, 0.64, 1.28
+		4. For each dataset, 12 graphs will be generated.
+			2a. Test the perceptron with 6 different learning rates {0.01, 0.1, 0.2, 0.5, 0.8, 1}
 			2b. Test each learning rate against two termination criteria. Only max iterations, and one that will stop early
 					if its not improving for 50 iterations and the error rate is below 0.2.
 		
 		
-		5. For each of the 32 total tests, it will flash the graph on the screen then close it after half a second.
+		5. For each of the 24 total tests, it will flash the graph on the screen then close it after half a second.
 		It is saving these graphs to .png files in the outputFiles/plots directory. The corresponding raw data 
 		for these plots is saved to .txt files in outputFiles/data directory.
 		
 	Once it's done...
 	
-		After the program exists go to the outputFiles directory and examine the results.
+		After the program exits go to the outputFiles directory and examine the results.
 	
 
 B.Other Notes:

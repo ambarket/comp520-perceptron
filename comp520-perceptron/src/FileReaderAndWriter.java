@@ -105,9 +105,30 @@ public class FileReaderAndWriter {
 		plot.setLinearSlicing(1, 11);
 		plot.setLinearSlicing(0, 10);
 		
-	    BaseLabel title = new BaseLabel(titleStr, Color.BLUE, 0.5, 1.1);
+	    BaseLabel title = new BaseLabel(titleStr, Color.BLACK, 0.5, 1.1);
         title.setFont(new Font("Courier", Font.BOLD, 15));
         plot.addPlotable(title);
+        
+        double minTrainingError = 1, minValidationError = 1;
+        int minTrainingErrorIteration = trainingErrorByIteration.length, minValidationErrorIteration = validationErrorByIteration.length;
+        for (int i = 0; i < trainingErrorByIteration.length; i++) {
+        	if ( trainingErrorByIteration[i] < minTrainingError) {
+        		minTrainingError = trainingErrorByIteration[i];
+        		minTrainingErrorIteration = i;
+        	}
+        	if ( validationErrorByIteration[i] < minValidationError) {
+        		minValidationError = validationErrorByIteration[i];
+        		minValidationErrorIteration = i;
+        	}
+        	
+        }
+        String minTrainingErr = "Min Training Err:   " + String.format("%.4f", minTrainingError) + "  Iteration: " + minTrainingErrorIteration;
+        String minValidErr =    "Min Validation Err: " + String.format("%.4f", minValidationError) + "  Iteration: " + minValidationErrorIteration;
+	    BaseLabel minErrors = new BaseLabel(minTrainingErr + "\n" + minValidErr, Color.BLACK, 0.78, .88);
+	    minErrors.setFont(new Font("Courier", Font.PLAIN, 11));
+        plot.addPlotable(minErrors);
+        
+        
 		plot.setLinearSlicing(1, 11);
 		
 		JFrame frame = new JFrame("a plot panel");
